@@ -1,25 +1,25 @@
 <?php
 
 	// récupération de la catégorie
-	$categorie = $_POST['categorie'];
-
+	// récupération du dossier
+	$dossier = $_POST['dossier'];
+	setcookie('dossier',  $_POST['dossier'], time() + 365*24*3600, null, null, false, true); 
 	//
-	$titre = "Liste des places associées au dossier 11 pour la catégorie $categorie";
+	$titre = "Liste des places associées au dossier $dossier";
 	include('entete.php');
 
 	// construction de la requete
 	$requete = ("
-		SELECT noPlace, noRang, noZone, nomS
+		SELECT distinct nomC
 		FROM theatre.LesSieges natural join theatre.LesZones natural join theatre.LesCategories natural join theatre.LesTickets natural join theatre.LesSpectacles
-		WHERE lower(nomC) = lower(:n)
-		AND noDossier = 11
+		WHERE noDossier = :b
 	");
 
 	// analyse de la requete et association au curseur
 	$curseur = oci_parse ($lien, $requete) ;
 
 	// affectation de la variable
-	oci_bind_by_name ($curseur, ':n', $categorie);
+	oci_bind_by_name ($curseur, ':b', $dossier);
 
 	// execution de la requete
 	$ok = @oci_execute ($curseur) ;
@@ -45,23 +45,24 @@
 		}
 		else {
 
-			// on affiche la table qui va servir a la mise en page du resultat
-			echo "<table><tr><th>Spectacle</th><th>Place</th><th>Rang</th><th>Zone</th></tr>" ;
-
+			echo ("
+		<form action=\"SpectaclesDossier_v3_action2.php\" method=\"POST\">
+			<label for=\"inp_categoris\">Veuillez saisir une categorie :</label>
+			<select name=\"categorie\">");
 			// on affiche un résultat et on passe au suivant s'il existe
 			do {
-
-				$noPlace = oci_result($curseur, 1) ;
-				$noRang = oci_result($curseur, 2) ;
-				$noZone = oci_result($curseur, 3) ;
-				$nomS = oci_result($curseur, 4) ;
-				echo "<tr><td>$nomS</td><td>$noPlace</td><td>$noRang</td><td>$noZone</td></tr>";
-
-			} while (oci_fetch ($curseur));
-
-			echo "</table>";
-		}
-
+		$categorie=oci_result($curseur,1);
+	// affichage du formulaire
+	echo (" <option value=\"$categorie\">$categorie</option> ");
+	}while(oci_fetch ($curseur));
+	echo ("
+</select>
+			<br /><br />
+			<input type=\"submit\" value=\"Valider\" />
+			<input type=\"reset\" value=\"Annuler\" />
+		</form>
+	");
+	}
 	}
 
 	// on libère le curseur

@@ -29,6 +29,7 @@
 
 		// oci_execute a échoué, on affiche l'erreur
 		$error_message = oci_error($curseur);
+		echo "<p>$categorie</p><br>";
 		echo "<p class=\"erreur\">{$error_message['message']}</p>";
 
 	}

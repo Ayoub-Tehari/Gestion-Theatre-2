@@ -36,6 +36,16 @@ else {
          echo '<p id="identif"> Peut-être que vous voulez vous <a href="connexion.php">identifier</a> ?</p>';
       } ?>
 
+
+
+<h2> Tâches pour Question 2</h2>
+      <ul class="menu">
+<li><a href="DetailsRepresentation.php">Les details des representations</a> </li>
+      </ul>
+
+
+
+
       <h2> Contenu des relations de la base de données </h2>
       <ul class="menu">
 	      <li><a href="AfficherTablesFournies.php">Contenu des relations fournies </a> </li>

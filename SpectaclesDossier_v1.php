@@ -7,7 +7,14 @@
 	echo ("
 		<form action=\"SpectaclesDossier_v1_action.php\" method=\"POST\">
 			<label for=\"inp_categorie\">Veuillez saisir une catégorie :</label>
-			<input type=\"text\" name=\"categorie\" />
+			
+			<select name=\"categorie\">
+
+    <option value=\"orchestre\">orchestre</option>
+    <option value=\"1er balcon\">1er balcon</option>
+    <option value=\"2nd balcon\">2nd balcon</option>
+    <option value=\"poulailler\">poulailler</option> 
+</select>
 			<br /><br />
 			<input type=\"submit\" value=\"Valider\" />
 			<input type=\"reset\" value=\"Annuler\" />

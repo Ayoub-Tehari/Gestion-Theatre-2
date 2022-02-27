@@ -1,18 +1,43 @@
 <?php
 
-	$titre = 'Liste des places associées au dossier 11 pour une catégorie donnée';
+	$titre = 'Liste des places associées au dossier donnée';
 	include('entete.php');
+$requete = " select distinct noDossier from theatre.LesTickets order by noDossier";
 
-	// affichage du formulaire
+	// analyse de la requete et association au curseur
+	$curseur = oci_parse ($lien, $requete) ;
+
+
+	// execution de la requete
+	$ok = @oci_execute ($curseur) ;
+
+	if(!$ok) {
+		echo"kdkdkdkdk";
+	}else{
+	$res = oci_fetch ($curseur);
+	if (!$res){
+		echo "ddddddd";
+	}else{
 	echo ("
 		<form action=\"SpectaclesDossier_v3_action.php\" method=\"POST\">
-			<label for=\"inp_categorie\">Veuillez saisir une catégorie :</label>
-			<input type=\"text\" name=\"categorie\" />
+			<label for=\"inp_dossier\">Veuillez saisir un dossier :</label>
+			<select name=\"dossier\">");
+	do {
+		$noDossier=oci_result($curseur,1);
+	// affichage du formulaire
+	echo (" <option value=\"$noDossier\">$noDossier</option> ");
+	}while(oci_fetch ($curseur));
+	echo ("
+</select>
 			<br /><br />
 			<input type=\"submit\" value=\"Valider\" />
 			<input type=\"reset\" value=\"Annuler\" />
 		</form>
 	");
+	}
+	}
+
+	
 
 	// travail à réaliser
 	echo ("
